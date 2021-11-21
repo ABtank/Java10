@@ -6,6 +6,7 @@ import ru.abtank.java10.less1.polymorphism.Figure;
 import ru.abtank.java10.less1.polymorphism.Square;
 import ru.abtank.java10.less1.polymorphism.Triangle;
 import ru.abtank.java10.less2.MyArrayList;
+import ru.abtank.java10.less2.MyLinkedList;
 
 import java.util.List;
 import java.util.Random;
@@ -63,6 +64,30 @@ public class Main {
         for (int i = 0; i < 10; i++) {
             System.out.print(myArrayList.get(i)+", ");
         }
+
+        // -=MyLinkedList=-
+        System.out.println("-=MyLinkedList=-");
+        MyLinkedList<String> myLinkedList = new MyLinkedList();
+        System.out.println();
+        System.out.println(myLinkedList);
+        myLinkedList.insertFirst("Katia");
+        myLinkedList.insertFirst("Petia");
+        myLinkedList.insertFirst("Maria");
+        System.out.println(myLinkedList);
+        System.out.println(myLinkedList.deleteFirst());
+        System.out.println(myLinkedList);
+        System.out.println(myLinkedList.getFirst());
+
+        myLinkedList.insert(0,"Maria");
+        myLinkedList.insert(1,"Sasha");
+        myLinkedList.insert(3,"Sasha");
+        System.out.println(myLinkedList);
+        System.out.println(myLinkedList.delete("Sasha"));
+        System.out.println(myLinkedList.delete("Peggggggggg"));
+        System.out.println(myLinkedList.indexOf("Peggggggggg"));
+        System.out.println(myLinkedList.indexOf("Sasha"));
+        System.out.println(myLinkedList.contains("Peggggggggg"));
+        System.out.println(myLinkedList);
 
     }
 }
