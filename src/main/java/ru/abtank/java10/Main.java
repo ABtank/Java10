@@ -5,6 +5,9 @@ import ru.abtank.java10.less1.polymorphism.Circle;
 import ru.abtank.java10.less1.polymorphism.Figure;
 import ru.abtank.java10.less1.polymorphism.Square;
 import ru.abtank.java10.less1.polymorphism.Triangle;
+import ru.abtank.java10.less3.ClassCounter;
+import ru.abtank.java10.less3.ClassLock;
+import ru.abtank.java10.less3.MyPingPong;
 
 import java.util.List;
 
@@ -34,6 +37,13 @@ public class Main {
         for (Figure figure : list) {
             System.out.println(figure.getClass().getSimpleName() + "\nПлощадь = " + figure.area() + "\nПериметр = " + figure.perimeter());
         }
+
+//        Lock
+        ClassCounter classCounter = new ClassCounter();
+        new ClassLock(classCounter,(int) (Math.random()*10)).start();
+        new ClassLock(classCounter,(int) (Math.random()*10)).start();
+
+
 
     }
 }
