@@ -43,7 +43,15 @@ public class Main {
         new ClassLock(classCounter,(int) (Math.random()*10)).start();
         new ClassLock(classCounter,(int) (Math.random()*10)).start();
 
-
+//        Ping -Pong
+        int round = (int) (Math.random()*10);
+        MyPingPong myPingPong = new MyPingPong(round);
+        new Thread(()->{
+            myPingPong.play("ping");
+        }).start();
+        new Thread(() ->{
+            myPingPong.play("pong");
+        }).start();
 
     }
 }
