@@ -78,6 +78,7 @@ values (1), (1),(1), (1),(1), (2),(2), (2),(2), (2),(2), (2),(2), (2),(2), (2),(
        (15), (15), (15), (15), (15), (15), (15), (15);
 
 
+-- чисто для удобства чтения запроса ниже
 CREATE VIEW v_film_seance AS
 select f.id                                                    as film_id
      , s.id                                                    as seance_id
@@ -89,7 +90,8 @@ from film f
          left join seance s on s.film_id = f.id
 ;
 
-
+-- ошибки в расписании (фильмы накладываются друг на друга), отсортированные по возрастанию времени.
+-- Выводить надо колонки «фильм 1», «время начала», «длительность», «фильм 2», «время начала», «длительность»;
 select vfs1.name                                     as film_1
      , vfs1.dt_start                                 as f1_start
      , vfs1.length                                   as f1_length
@@ -106,7 +108,8 @@ ORDER BY f1_start
 ;
 
 
-
+-- перерывы 30 минут и более между фильмами — выводить по уменьшению длительности перерыва.
+-- Колонки «фильм 1», «время начала», «длительность», «время начала второго фильма», «длительность перерыва»;
 select film_1, f1_start, f1_length, break, f2_start, f2_tength
 FROM (select vfs1.name                                                              as film_1
            , vfs1.dt_start                                                          as f1_start
@@ -129,7 +132,10 @@ HAVING break > 30
 order BY break desc
 ;
 
-select film
+-- список фильмов, для каждого — с указанием общего числа посетителей за все время,
+-- среднего числа зрителей за сеанс и общей суммы сборов по каждому фильму (отсортировать по убыванию прибыли).
+-- Внизу таблицы должна быть строчка «итого», содержащая данные по всем фильмам сразу;
+select  IFNULL(film,'ИТОГО') as film
      , sum(tickets)                       as visitors
      , sum(seances)                       as all_seances
      , sum(money)                         as all_money
@@ -150,5 +156,36 @@ from (select s.film_id
      ) as v_t
 GROUP BY film
 WITH ROLLUP
-         order by all_money
+order by all_money
+;
+
+-- число посетителей и кассовые сборы, сгруппированные по времени начала фильма:
+-- с 9 до 15, с 15 до 18, с 18 до 21,
+-- с 21 до 00:00 (сколько посетителей пришло с 9 до 15 часов и т.д.).
+
+SELECT IF(GROUPING(period), 'ИТОГО', period) AS period
+     , IFNULL(tickets, 'Подитог')            AS tickets
+     , sum(tickets)                          AS visitors
+     , sum(money)                            AS all_money
+FROM (
+         SELECT CASE
+                    -- BETWEEN лучше избегать по этому так
+                    WHEN HOUR(dt_start) >= 9 AND HOUR(dt_start) <= 15 THEN '9-15'
+                    WHEN HOUR(dt_start) >= 15 AND HOUR(dt_start) <= 18 THEN '15-18'
+                    WHEN HOUR(dt_start) >= 18 AND HOUR(dt_start) <= 21 THEN '18-21'
+                    WHEN HOUR(dt_start) >= 21 AND HOUR(dt_start) <= 24 THEN '21-24'
+                    ELSE "another time"
+             END                             AS period
+              , s.price
+              , count(t.seance_id)           AS tickets
+              , s.dt_start
+              , s.price * count(t.seance_id) AS money
+         from seance s
+                  LEFT JOIN ticket t ON t.seance_id = s.id
+                  LEFT JOIN film f ON f.id = s.film_id
+         WHERE HOUR(dt_start) >= 9 AND HOUR(dt_start) <= 24
+         GROUP BY s.id
+     ) AS v_t
+GROUP BY period, tickets
+WITH ROLLUP
 ;
