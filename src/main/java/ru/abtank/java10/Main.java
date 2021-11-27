@@ -5,6 +5,9 @@ import ru.abtank.java10.less1.polymorphism.Circle;
 import ru.abtank.java10.less1.polymorphism.Figure;
 import ru.abtank.java10.less1.polymorphism.Square;
 import ru.abtank.java10.less1.polymorphism.Triangle;
+import ru.abtank.java10.less3.ClassCounter;
+import ru.abtank.java10.less3.ClassLock;
+import ru.abtank.java10.less3.MyPingPong;
 import ru.abtank.java10.less2.MyArrayList;
 import ru.abtank.java10.less2.MyLinkedList;
 
@@ -43,6 +46,7 @@ public class Main {
             System.out.println(figure.getClass().getSimpleName() + "\nПлощадь = " + figure.area() + "\nПериметр = " + figure.perimeter());
         }
 
+      
         /** Less2 */
         Random random = new Random();
         int size = 10_000;
@@ -88,6 +92,23 @@ public class Main {
         System.out.println(myLinkedList.indexOf("Sasha"));
         System.out.println(myLinkedList.contains("Peggggggggg"));
         System.out.println(myLinkedList);
+      
+      
+       /** Less3 */
+//        Lock
+        ClassCounter classCounter = new ClassCounter();
+        new ClassLock(classCounter,(int) (Math.random()*10)).start();
+        new ClassLock(classCounter,(int) (Math.random()*10)).start();
+
+//        Ping -Pong
+        int round = (int) (Math.random()*10);
+        MyPingPong myPingPong = new MyPingPong(round);
+        new Thread(()->{
+            myPingPong.play("ping");
+        }).start();
+        new Thread(() ->{
+            myPingPong.play("pong");
+        }).start();
 
     }
 }
