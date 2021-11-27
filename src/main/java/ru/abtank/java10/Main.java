@@ -5,10 +5,18 @@ import ru.abtank.java10.less1.polymorphism.Circle;
 import ru.abtank.java10.less1.polymorphism.Figure;
 import ru.abtank.java10.less1.polymorphism.Square;
 import ru.abtank.java10.less1.polymorphism.Triangle;
+import ru.abtank.java10.less2.MyArrayList;
+import ru.abtank.java10.less2.MyLinkedList;
 
 import java.util.List;
+import java.util.Random;
 
 public class Main {
+    private static void fillList(Random random, MyArrayList<Integer> selectionSortList, int size) {
+        for (int i = 0; i < size; i++) {
+            selectionSortList.add(random.nextInt(1000000));
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -34,6 +42,52 @@ public class Main {
         for (Figure figure : list) {
             System.out.println(figure.getClass().getSimpleName() + "\nПлощадь = " + figure.area() + "\nПериметр = " + figure.perimeter());
         }
+
+        /** Less2 */
+        Random random = new Random();
+        int size = 10_000;
+        // ArrayList
+        MyArrayList<Integer> myArrayList = new MyArrayList<>();
+        fillList(random, myArrayList, size);
+        System.out.println(myArrayList.size());
+        System.out.println(myArrayList.contains(123));
+        System.out.println(myArrayList.get(2));
+        myArrayList.set(2,123);
+        System.out.println(myArrayList.get(2));
+        System.out.println(myArrayList.remove(123));
+        System.out.println(myArrayList.getCapacity());
+        for (int i = 0; i < 10; i++) {
+            System.out.print(myArrayList.get(i)+", ");
+        }
+        System.out.println("\nsort");
+        myArrayList.quickSort();
+        for (int i = 0; i < 10; i++) {
+            System.out.print(myArrayList.get(i)+", ");
+        }
+
+        // -=MyLinkedList=-
+        System.out.println("-=MyLinkedList=-");
+        MyLinkedList<String> myLinkedList = new MyLinkedList();
+        System.out.println();
+        System.out.println(myLinkedList);
+        myLinkedList.insertFirst("Katia");
+        myLinkedList.insertFirst("Petia");
+        myLinkedList.insertFirst("Maria");
+        System.out.println(myLinkedList);
+        System.out.println(myLinkedList.deleteFirst());
+        System.out.println(myLinkedList);
+        System.out.println(myLinkedList.getFirst());
+
+        myLinkedList.insert(0,"Maria");
+        myLinkedList.insert(1,"Sasha");
+        myLinkedList.insert(3,"Sasha");
+        System.out.println(myLinkedList);
+        System.out.println(myLinkedList.delete("Sasha"));
+        System.out.println(myLinkedList.delete("Peggggggggg"));
+        System.out.println(myLinkedList.indexOf("Peggggggggg"));
+        System.out.println(myLinkedList.indexOf("Sasha"));
+        System.out.println(myLinkedList.contains("Peggggggggg"));
+        System.out.println(myLinkedList);
 
     }
 }
