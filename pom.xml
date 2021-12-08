@@ -23,6 +23,7 @@
     </build>
     <modules>
         <module>less5Hibernate</module>
+        <module>less6JavaWebServlet</module>
     </modules>
 
 

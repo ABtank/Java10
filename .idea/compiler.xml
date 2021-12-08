@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="less6JavaWebServlet" />
         <module name="less5Hibernate" />
       </profile>
     </annotationProcessing>
